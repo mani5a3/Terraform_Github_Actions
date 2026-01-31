@@ -1,0 +1,34 @@
+name: Terraform via Makefile
+
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Terraform action"
+        required: true
+        type: choice
+        options:    
+          - init
+          - plan
+          - apply
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set AWS credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+        run: |
+          echo "AWS credentials loaded"
+
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform via Makefile
+        run: |
+          make ${{ inputs.action }}
