@@ -12,6 +12,8 @@ on:
           - init
           - plan
           - apply
+          - plan-destroy
+          - destroy
 
 jobs:
   terraform:
